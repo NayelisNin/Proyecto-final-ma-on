@@ -1,4 +1,3 @@
-// URL base de la API (Tus compañeros te darán esta dirección)
 const API_URL = 'http://localhost:3000/api/libros';
 
 const bookForm = document.getElementById('book-form');
@@ -6,80 +5,133 @@ const booksBody = document.getElementById('books-body');
 const totalDisplay = document.getElementById('total-gastado');
 const searchInput = document.getElementById('search');
 
-let allBooks = []; // Variable para guardar los libros localmente
+let allBooks = [];
 
-// 1. Función para obtener libros (GET)
+// GET
 async function fetchBooks() {
     try {
-        // Por ahora usamos datos de prueba si la API no está lista
-        // const response = await fetch(API_URL);
-        // allBooks = await response.json();
-        
-        // DATOS DE PRUEBA (MOCK DATA)
-        allBooks = [
-            { id: 1, titulo: 'El Quijote', autor: 'Cervantes', precio: 20.00, fecha: '2024-01-15' },
-            { id: 2, titulo: 'Hábitos Atómicos', autor: 'James Clear', precio: 15.50, fecha: '2024-02-10' }
-        ];
-        
+        const response = await fetch(API_URL);
+
+        if (!response.ok) throw new Error("Error en API");
+
+        allBooks = await response.json();
         renderBooks(allBooks);
+
     } catch (error) {
         console.error("Error cargando libros:", error);
     }
 }
 
-// 2. Función para pintar los libros en la tabla
+// RENDER
 function renderBooks(books) {
     booksBody.innerHTML = '';
     let total = 0;
 
     books.forEach(book => {
         total += parseFloat(book.precio);
-        const row = `
-            <tr>
-                <td>${book.titulo}</td>
-                <td>${book.autor}</td>
-                <td>$${parseFloat(book.precio).toFixed(2)}</td>
-                <td>${book.fecha}</td>
-                <td>
-                    <button class="btn-delete" onclick="deleteBook(${book.id})">Eliminar</button>
-                </td>
-            </tr>
-        `;
-        booksBody.innerHTML += row;
+
+     booksBody.innerHTML += `
+        <tr>
+            <td>${book.titulo}</td>
+            <td>${book.autor}</td>
+            <td>$${parseFloat(book.precio).toFixed(2)}</td>
+            <td>${book.fecha}</td>
+            <td>
+            <button class="btn-edit" onclick="editBook(${book.id})">Editar</button>
+            <button class="btn-delete" onclick="deleteBook(${book.id})">Eliminar</button>
+            </td>
+        </tr>
+    `;
     });
 
     totalDisplay.innerText = `$${total.toFixed(2)}`;
 }
 
-// 3. Función para agregar un libro (POST)
+// DELETE
+async function deleteBook(id) {
+    try {
+        await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE'
+        });
+
+        fetchBooks();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// EDIT
+async function editBook(id) {
+
+    const titulo = prompt("Nuevo título:");
+    const autor = prompt("Nuevo autor:");
+    const precio = prompt("Nuevo precio:");
+    const fecha = prompt("Nueva fecha:");
+
+    if (!titulo || !autor || !precio || !fecha) return;
+
+    try {
+        await fetch(`${API_URL}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                titulo,
+                autor,
+                precio: parseFloat(precio),
+                fecha
+            })
+        });
+
+        fetchBooks();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// POST
 bookForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nuevoLibro = {
         titulo: document.getElementById('titulo').value,
         autor: document.getElementById('autor').value,
-        precio: document.getElementById('precio').value,
-        fecha: document.getElementById('fecha').value
+        precio: parseFloat(document.getElementById('precio').value),
+        fecha: document.getElementById('fecha').value,
+        stock: Math.floor(Math.random() * 26) + 1
     };
 
-    console.log("Enviando al backend:", nuevoLibro);
-    // Aquí harías el fetch POST a la API de tus compañeros
-    
-    // Simulación: Lo agregamos al array local
-    allBooks.push({...nuevoLibro, id: Date.now()});
-    renderBooks(allBooks);
-    bookForm.reset();
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nuevoLibro)
+        });
+
+        if (!res.ok) throw new Error("Error al guardar");
+
+        fetchBooks();
+        bookForm.reset();
+
+    } catch (error) {
+        console.error(error);
+    }
 });
 
-// 4. Buscador en tiempo real
+// SEARCH
 searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
-    const filtered = allBooks.filter(book => 
-        book.titulo.toLowerCase().includes(term) || 
+
+    const filtered = allBooks.filter(book =>
+        book.titulo.toLowerCase().includes(term) ||
         book.autor.toLowerCase().includes(term)
     );
+
     renderBooks(filtered);
 });
 
-// Inicializar la carga
+// INIT
 fetchBooks();
