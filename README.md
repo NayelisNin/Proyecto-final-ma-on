@@ -1,5 +1,4 @@
-Desarrollo Full Stack y Despliegue en la Nube
-
+# Desarrollo Full Stack y Despliegue en la Nube
 El proyecto debe estar estructurado con una arquitectura moderna que incluya los siguientes componentes. En primer lugar, debe contar con un frontend, que será la interfaz de usuario, y un backend, encargado de la lógica del sistema y la gestión de datos. La comunicación entre ambos debe realizarse mediante una API.
 
 Para el desarrollo del frontend, los estudiantes pueden apoyarse en herramientas de diseño como Bootstrap, lo que permitirá crear interfaces responsivas y visualmente organizadas de manera más eficiente.
