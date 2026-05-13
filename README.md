@@ -14,3 +14,5 @@ Además, es obligatorio que el repositorio incluya un archivo README bien estruc
 La descripción del proyecto.
 Las instrucciones para descargar o clonar el repositorio.
 Los pasos necesarios para ejecutar el proyecto en un entorno local.
+
+Este pryecto fue realizado por Samuel Jiménez y Nayelis Nin
