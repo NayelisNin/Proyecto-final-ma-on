@@ -3,13 +3,24 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon .frontend/index.html"
+  },
+
+  "repository": {
+    "type": "module",
+    "url": "https://github.com/NayelisNin/Proyecto-final-ma-on.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Nayelis Nin, Samuel Jimenez",
+  "license": "MIT",
+    "description": "",
+  "bugs": {
+    "url": "https://github.com/NayelisNin/Proyecto-final-ma-on.git/issues"
+  },
+  "homepage": "https://github.com/NayelisNin/Proyecto-final-ma-on.git#readme",
   "dependencies": {
-    "serve": "^14.2.6"
+    "nodemon": "0.20.9",
+    "express": "^4.18.2"
   }
 }
