@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "1.0.0",
+<<<<<<< HEAD:frontend/package.json
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,5 +23,12 @@
   "dependencies": {
     "nodemon": "0.20.9",
     "express": "^4.18.2"
+=======
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+>>>>>>> dfd3cebaf8d0195261ac3470dce55f2e7dc96d75:Proyecto-final-ma-on/frontend/package.json
   }
 }
